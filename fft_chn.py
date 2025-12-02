@@ -5,7 +5,7 @@ Author: GSS
 Mail: gao.hillhill@gmail.com
 Description: 
 Created Time: 7/15/2016 11:47:39 AM
-Last modified: 11/4/2025 4:46:54 PM
+Last modified: 11/14/2025 10:45:15 AM
 """
 
 #defaut setting for scientific caculation
@@ -116,8 +116,6 @@ def chn_fft_psd(chndata, fs = 2000000.0, fft_s = 2000, avg_cycle = 50): #power s
         x = chndata[i*fft_s:(i+1)*fft_s]
         if ( i == 0 ):
             pt = (fft(x)/fft_s)# fft computing and normalization 
-            print (len(pt))
-            print (fft_s/2)
             p = (np.abs(pt[0:int(fft_s/2)+1]))**2 # take only positive frequency terms, other half identical# power ~ voltage squared, power in each bin. 
             # p[0] is the dc term
             # p[nfft/2] is the Nyquist term, note that Python 2.X indexing does NOT 

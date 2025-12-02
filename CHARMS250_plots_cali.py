@@ -23,28 +23,18 @@ from fft_chn import chn_fft_psd
 import pickle
 
 tps = [2, 3, 0,1]
-#gains=[0,1,2,3]
-gains=[0]
+gains=[0,1,2,3]
 
 allchns = [[[],[],[],[]], [[],[],[],[]],[[],[],[],[]],[[],[],[],[]]]
 allpeds = [[],[],[],[]]
 allrmss = [[],[],[],[]]
-#for tp in tps:
 for tp in tps:
-#for tp in [0]:
     for g in gains:
-#    for g in [0]:
         #fn = f'D:/CHARMS250/data/BoardA11_ChipSN01_P2_RT/BL200_Noise_tp{tp}_gain{g}.bin'
         #fn = f'D:/CHARMS250/data/BoardA11_ChipSN01_P2_RT/Noise_tp{tp}_gain{g}.bin'
         #fn = f'D:/CHARMS250/data/BoardA11_ChipSN01_P2_RT/BGR_BL200_Noise_tp{tp}_gain{g}.bin'
         #fn = f'D:/CHARMS250/data/BoardA11_ChipSN01_P2_RT/BGR_BL200_Noise_tp{tp}_gain{g}.bin'
-        #fn = f'D:/CHARMS250/data/RMS_154pF/LN2_BGR_BL900mV_Noise_tp{tp}_gain{g}_SDF1.bin'
-        #fn = f'D:/CHARMS250/data/RMS_154pF/BGR_BL900mV_Noise_tp{tp}_gain{g}.bin'
-        #fn = f'D:/CHARMS250/data/RMS_0pF/BGR_BL900mV_Noise_tp{tp}_gain{g}.bin'
-        #fn = f'D:/CHARMS250/data/RMS_0pF/BGR_BL900mV_Noise_tp{tp}_gain{g}_DIFF.bin'
-        #fn = f'D:/CHARMS250/data/RMS_154pF/BGR_BL900mV_Noise_tp{tp}_gain{g}_DIFF.bin'
-        #fn = f'D:/CHARMS250/data/RMS_154pF/BGR_BL900mV_Noise_tp{tp}_gain{g}.bin'
-        fn = f'D:/CHARMS250/data/RMS_154pF_2Ohm_s/BGR_BL200mV_Noise_tp{tp}_gain{g}.bin'
+        fn = f'D:/CHARMS250/data/Ext_Cali/Ext_Cali20mV_BL900mV_tp{tp}_gain{g}.bin'
         with open (fn, 'rb') as fp:
             print (fn)
             rawdata = pickle.load(fp)
@@ -53,45 +43,15 @@ for tp in tps:
             allpeds[g].append(np.mean(chns[9]))
             allrmss[g].append(np.std(chns[9]))
             allchns[g][tp]= chns[9]
+
+            fig = plt.figure(figsize=(8,6))
+            plt.plot(chns[9][0:1000], marker='.')
+            plt.show()
+            plt.close()
+            exit()
+
             #allpeds[g][tp] = np.mean(chns[9])
             #allrmss[g][tp] = np.std(chns[9])
-
-
-#for g in [0]:
-#    fig = plt.figure(figsize=(8,6))
-#    if g == 0:
-#        gtitle="14 mV/fC"
-#    if g == 1:
-#        gtitle="25 mV/fC"
-#    if g == 2:
-#        gtitle="7.8 mV/fC"
-#    if g == 3:
-#        gtitle="4.7 mV/fC"
-#
-#    #x = [0.25, 0.5, 1, 2]
-#    for tp in [0]:
-#        x = [1, 2, 0.25, 0.5 ]
-#        gtp_title=gtitle + "," + f"{x[tp]} us"
-#        chndata= allchns[g][tp]
-#        plt.plot(chndata[0:2000])
-#        plt.show()
-#        plt.close()
-#        print (len(chndata))
-#        f, p = chn_fft_psd(chndata, fs = 2000000.0, fft_s = 10000, avg_cycle = 50)
-#        plt.plot(f,p,label=gtp_title)
-#
-#    #plt.plot(x, allpeds[g], marker='x', label=gtitle)
-#    #plt.plot(x, allrmss[g], marker='x', label=gtitle)
-#    plt.xlabel("Freq / Hz")
-#    plt.ylabel("PSD / DB ")
-#    #plt.ylim((0,150))
-#    plt.title("FFT")
-#    plt.legend()
-#    plt.grid()
-#    plt.show()
-#    plt.close()
-##
-#exit()
 
 
 fig = plt.figure(figsize=(8,6))
@@ -130,7 +90,7 @@ for g in gains:
     plt.plot(x, allrmss[g], marker='x', label=gtitle)
 plt.xlabel("Shape time / us")
 plt.ylabel("ADC counts /bit")
-plt.ylim((0,300))
+plt.ylim((0,150))
 plt.title("RMS Noise")
 plt.legend()
 plt.grid()

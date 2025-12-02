@@ -19,7 +19,7 @@ import pickle
 brd = BoardCfg()
 
 # From ADC configuration file (adc_config.py): temperature and directory name
-rawdir = "D:/CHARMS250/data/RMS_154pF_2Ohm_s/"
+rawdir = "D:/CHARMS250/data/Ext_Cali/"
 # Input options from batch file: reference, SDC enable, weights selection, system sample rate
 # ADC Sample Rate = 16   ->
 # 16 Ms/s sample rate of internal ADC, 2 MHz sample rate of full system ADC (not fully reliable operation)
@@ -77,9 +77,8 @@ if True:
     #CHRAMS Reset
     brd.charms_reset()
     
-    
     #sdf=1
-    #brd.charms_i2c_wr(0x00,0x00, 0x01) 
+    brd.charms_i2c_wr(0x00,0x00, 0x00) 
     #sdd=1
     #brd.charms_i2c_wr(0x00,0x00, 0x02) 
     
@@ -87,15 +86,20 @@ if True:
     brd.charms_i2c_wr(0xff,0x09, 0x80) #changed to interal refernce 
     brd.charms_i2c_rd(0xff,0x09) 
     #BL=200
-    #brd.charms_i2c_wr(0x00,0x02, 0x04) 
+    brd.charms_i2c_wr(0x00,0x02, 0x04) 
     #brd.charms_i2c_rd(0x00,0x02) 
 
     
     #brd.charms_i2c_wr(0x00,0x00, 0x04) #SMN enabled
     #brd.charms_i2c_wr(0x00,0x00, 0x00) #SMN disabled
+    brd.charms_i2c_wr(0x00,0x00, 0x05) #SMN enabled
+
+    brd.charms_i2c_wr(0x00,0x03, 0x02) 
+    #brd.charms_i2c_wr(0x00,0x03, 0x04) 
     
 #    #test cal pulse enabled
-#    brd.charms_i2c_wr(0x00,0x01, 0x08) 
+    brd.charms_i2c_wr(0x00,0x01, 0x38) 
+    #brd.charms_i2c_wr(0x00,0x03, 0x04) 
 #
 #    fn = rawdir + f"pls60mV.bin"
 #    if os.path.exists(fn):
@@ -107,34 +111,28 @@ if True:
 #    chns = brd.get_adcdata(PktNum=100000, saveraw=True, fn=fn)
 #
 
-if True:
+if False:
     brd.charms_i2c_wr(0x00,0x02, 0x04) 
     for tp in (0,1,2,3):
-    #for tp in [0]:
-        #for gain in (0,1,2,3):
-        for gain in [0]:
+        for gain in (0,1,2,3):
             brd.charms_reset()
             #Internal Referenc3
             brd.charms_i2c_wr(0xff,0x09, 0x80) #changed to interal refernce 
             brd.charms_i2c_rd(0xff,0x09) 
-            BL=200
-            brd.charms_i2c_wr(0x00,0x02, 0x04) 
-            #sdf=1
-            #brd.charms_i2c_wr(0x00,0x00, 0x01) 
-            #sdd=1
-            #brd.charms_i2c_wr(0x00,0x00, 0x02) 
+            #BL=200
+            #brd.charms_i2c_wr(0x00,0x02, 0x04) 
+            #brd.charms_i2c_rd(0x00,0x02) 
 
             brd.charms_i2c_wr(0x00,0x03, (tp|(gain<<2))&0xff) 
             time.sleep(1)
-            fn = rawdir + f"BGR_BL200mV_Noise_tp{tp}_gain{gain}_3.bin"
+            fn = rawdir + f"Ext_Cali20mV_BL900mV_tp{tp}_gain{gain}.bin"
             if os.path.exists(fn):
                 print (f'{fn} exists, change the file name')
                 fname = input ("Please rename : ")
                 fn = rawdir + fname + ".bin"
             else:
                 pass
-            chns = brd.get_adcdata(PktNum=500000, saveraw=True, fn=fn)
-            #exit()
+            chns = brd.get_adcdata(PktNum=100000, saveraw=True, fn=fn)
 
 if False:#Bbias_cst
     while True:

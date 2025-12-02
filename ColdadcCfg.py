@@ -337,8 +337,8 @@ class ColdadcCfg:
         self.bjt_vrefn = 0x29
         self.bjt_vcmo = 0x8D
         self.bjt_vcmi = 0x65
-        self.cmos_vrefp = 0xDF
-        self.cmos_vrefn = 0x33
+        self.cmos_vrefp = 0xEF
+        self.cmos_vrefn = (0x23-8)
         self.cmos_vcmo = 0x89
         self.cmos_vcmi = 0x67
 
